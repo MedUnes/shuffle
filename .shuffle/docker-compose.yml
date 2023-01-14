@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  go:
+    container_name: "${COMPOSE_PROJECT_NAME}"
+    build:
+      context: ../
+      dockerfile: .shuffle/go/Dockerfile
+      args:
+        GO_VERSION: ${GO_VERSION}
+        APP_PATH: "${APP_PATH}"
+    volumes:
+      - app:${APP_PATH}
+    environment:
+      GOPATH: "${GOPATH}"
+      GO111MODULE: "${GO111MODULE}"
+      APP_NAME: "${APP_NAME}"
+    tty: true
+    expose:
+      - "80"
+volumes:
+  app:
+    name: "${COMPOSE_PROJECT_NAME}"
+    driver: local
+    driver_opts:
+      type: none
+      device: ${PWD}
+      o: bind
